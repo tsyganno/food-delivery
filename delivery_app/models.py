@@ -25,6 +25,7 @@ class Dish(models.Model):
     description_dish = RichTextUploadingField(verbose_name='Описание блюда')
     image_dish = models.ImageField()
     category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name="category", verbose_name='Категория')
+    price = models.FloatField(null=True, verbose_name='Цена')
 
     def __str__(self):
         return self.title

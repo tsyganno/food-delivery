@@ -1,6 +1,13 @@
 {% extends "base/basic.html" %}
 
 {% block content %}
+  <style>
+    .row mb-0 {
+      moz-column-count: 2;
+      webkit-column-count: 2;
+      column-count: 2;
+   }
+  </style>
   <main class="container mt-3">
 
     <section>
@@ -31,15 +38,31 @@
       <h2 class="h2 font-weight-normal text-center mb-5">Блюда по категориям</h2>
       <div class="row mb-0">
 
-        <div class="col-6 col-md-6 col-lg-3">
-          <div class="card pt-4 text-center mb-4">
-            <a href="#"><img class="mx-auto d-block"  src="#" width="80"  height="80" alt="#"></a>
-            <div class="card-body">
-              <p class="card-text mb-2">---</p>
-                  <p class="card-text"><a href="#">---</a></p>
+      {% for category in categories %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <img src="{{ category.image_category.url }}" alt="" class="card-img-top">
+              <div class="card-body">
+                <h4 class="card-title">{{ category.name }}</h4>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a href="#" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+
+<!--        <div class="col-md-4">-->
+<!--          <div class="card pt-4 text-center mb-4">-->
+<!--            <a href="#"><img src="{{ category.image_category.url }}" alt="" class="card-img-top"></a>-->
+<!--            <div class="card-body">-->
+<!--              <p class="card-text mb-2">{{ category.name }}</p>-->
+<!--                  <p class="card-text"><a href="#">-&#45;&#45;</a></p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+      {% endfor %}
 
       </div>
     </section>
