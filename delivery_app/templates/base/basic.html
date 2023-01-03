@@ -10,7 +10,7 @@
 </head>
 <header class="container mt-3">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand mr-4 font-weight-bold" href="#">Березка</a>
+      <a class="navbar-brand mr-4 font-weight-bold" href="{% url 'app:index' %}">Березка</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
               aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -53,8 +53,11 @@
     </nav>
   </header>
 <body>
-  {% block content %}
-  {% endblock %}
+    {% block content %}
+    {% endblock %}
+
+    {% block pagination %}
+    {% endblock %}
 </body>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
           integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
