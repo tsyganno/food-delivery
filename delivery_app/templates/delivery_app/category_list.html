@@ -1,5 +1,7 @@
 {% extends "base/basic.html" %}
 
+{% block title %}Выбранная категория | Березка{% endblock %}
+
 {% block content %}
   <main class="container mt-3">
     <section class="mt-5 pt-3">
@@ -9,15 +11,23 @@
       {% for dish in page_obj %}
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
-              <img src="{{ dish.image_dish.url }}" alt="" class="card-img-top">
+              <a href="{% url 'app:dish' dish.pk dish.url_dish %}"><img src="{{ dish.image_dish.url }}" alt="" class="card-img-top"></a>
               <div class="card-body">
                 <h4 class="card-title">{{ dish.title }}</h4>
-                <h3 class="card-title">{{ dish.price }} руб.</h3>
+                <h4 class="card-title">{{ dish.price }},00 руб.</h4>
+
+                <br>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                    <a href="#" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                    <a href="{% url 'app:dish' dish.pk dish.url_dish %}" class="btn btn-sm btn-outline-secondary">Подробнее</a>
                   </div>
                 </div>
+                <br>
+                <form method="post" enctype="multipart/form-data" action="#">
+                     {% csrf_token %}
+                     <input type="submit" class="btn btn-sm btn-outline-secondary" value="Добавить в корзину">
+                  </form>
+
               </div>
             </div>
           </div>

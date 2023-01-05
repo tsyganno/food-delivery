@@ -1,0 +1,31 @@
+{% extends "base/basic.html" %}
+
+{% block title %}{{ dish.title }} | Березка{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <hr>
+            <ol class="breadcrumb">
+                <h4 class="breadcrumb-item">{{ dish.title|safe }}</h4>
+                <h4 class="breadcrumb-item active" aria-current="page"><a href="{{ request.META.HTTP_REFERER }}">Назад</a></h4>
+            </ol>
+            <hr>
+            <img class="img-fluid rounded " src="{{ dish.image_dish.url }}" alt="">
+            <hr>
+            <div class="mr-auto p-2 lead">{{ dish.description_dish|safe }}</div>
+            <hr>
+            <div class="mr-auto p-2 lead">Цена: {{ dish.price }},00 руб.</div>
+            <hr>
+        </div>
+    </div>
+        <form method="post" enctype="multipart/form-data" action="#">
+             {% csrf_token %}
+             <input type="submit" class="btn btn-sm btn-outline-secondary" value="Добавить в корзину">
+        </form>
+    <hr>
+</div>
+</div>
+
+{% endblock %}

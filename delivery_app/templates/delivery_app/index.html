@@ -1,13 +1,6 @@
 {% extends "base/basic.html" %}
 
 {% block content %}
-  <style>
-    .row mb-0 {
-      moz-column-count: 2;
-      webkit-column-count: 2;
-      column-count: 2;
-   }
-  </style>
   <main class="container mt-3">
 
     <section>
@@ -41,12 +34,12 @@
       {% for category in page_obj %}
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
-              <a href="{% url 'app:category_detail' category.pk category.url_category %}"><img src="{{ category.image_category.url }}" alt="" class="card-img-top"></a>
+              <a href="{% url 'app:category' category.pk category.url_category %}"><img src="{{ category.image_category.url }}" alt="" class="card-img-top"></a>
               <div class="card-body">
                 <h4 class="card-title">{{ category.name }}</h4>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                    <a href="{% url 'app:category_detail' category.pk category.url_category %}" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                    <a href="{% url 'app:category' category.pk category.url_category %}" class="btn btn-sm btn-outline-secondary">Подробнее</a>
                   </div>
                 </div>
               </div>
