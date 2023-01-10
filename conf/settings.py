@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'delivery_app',
+    'accounts',
     'ckeditor',
     'ckeditor_uploader',
 ]
@@ -161,3 +162,5 @@ CKEDITOR_CONFIGS = {
 }
 
 ###################################
+
+LOGOUT_REDIRECT_URL = "app:index"

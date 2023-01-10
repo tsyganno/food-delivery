@@ -10,9 +10,8 @@
 </head>
 <header class="container mt-3">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand mr-4 font-weight-bold" href="{% url 'app:index' %}">Березка</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand mr-4 font-weight-bold" href="{% url 'app:index' %}">Главаная</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
@@ -32,8 +31,7 @@
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="#">Резюме</a>
                 <a class="dropdown-item" href="#">Компания</a>
-              <form action="#" method="POST">
-<!--              <form action="#?next=/" method="POST">-->
+              <form action="{% url 'acc:signout' %}" method="POST">
                 {% csrf_token %}
                 {{ form.id_vote }}
                 <button class="dropdown-item" type="submit">Выйти</button>
@@ -42,7 +40,7 @@
             </li>
 
             {% else %}
-            <a href="#" class="nav-link font-weight-bold">Вход</a>
+            <a href="{% url 'acc:signin' %}" class="nav-link font-weight-bold">Вход</a>
             {% endif %}
 
 
@@ -58,7 +56,8 @@
 
     {% block pagination %}
     {% endblock %}
-
+    <br>
+    <br>
     {% include 'base/footer.html' %}
 </body>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
