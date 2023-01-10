@@ -11,7 +11,27 @@ class SigUpForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': "form-control",
             'id': "inputUsername",
+            'placeholder': "Логин пользователя"
+        }),
+    )
+
+    first_n = forms.CharField(
+        max_length=100,
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': "form-control",
+            'id': "inputUsername",
             'placeholder': "Имя пользователя"
+        }),
+    )
+
+    last_n = forms.CharField(
+        max_length=100,
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': "form-control",
+            'id': "inputUsername",
+            'placeholder': "Фамилия пользователя"
         }),
     )
 
@@ -44,6 +64,8 @@ class SigUpForm(forms.Form):
     def save(self):
         user = User.objects.create_user(
             username=self.cleaned_data['username'],
+            first_name=self.cleaned_data['first_n'],
+            last_name=self.cleaned_data['last_n'],
             password=self.cleaned_data['password'],
         )
         user.save()
@@ -58,7 +80,7 @@ class SignInForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': "form-control",
             'id': "inputUsername",
-            'placeholder': "Имя пользователя",
+            'placeholder': "Логин пользователя",
         })
     )
     password = forms.CharField(
