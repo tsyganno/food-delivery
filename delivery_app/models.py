@@ -36,8 +36,9 @@ class Dish(models.Model):
         ordering = ['title']
 
 
-class Order(models.Model):
+class Cart(models.Model):
     published_at = models.DateTimeField(verbose_name='Заказ создан')
+    active_status = models.BooleanField(default=True, verbose_name='Статус')
     dish = models.ManyToManyField(Dish, related_name="dish_user")
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
 

@@ -23,11 +23,7 @@
                   </div>
                 </div>
                 <br>
-                <form method="post" enctype="multipart/form-data" action="#">
-                     {% csrf_token %}
-                     <input type="submit" class="btn btn-sm btn-outline-secondary" value="Добавить в корзину">
-                  </form>
-
+                <a href="{% url 'app:add_to_cart' dish.pk %}" class="btn btn-sm btn-outline-secondary">Добавить в корзину</a>
               </div>
             </div>
           </div>

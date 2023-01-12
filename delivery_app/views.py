@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
-from delivery_app.models import Category, Dish
+from delivery_app.models import Category, Dish, Cart
 
 
 class IndexView(View):
@@ -37,3 +39,27 @@ class DishView(LoginRequiredMixin, View):
     def get(self, request, slug, *args, **kwargs):
         dish = get_object_or_404(Dish, id=self.kwargs['pk'])
         return render(request, 'delivery_app/dish.html', {'dish': dish})
+
+
+class CartView(LoginRequiredMixin, View):
+    """Страница с отображением содержимого в корзине"""
+    login_url = 'acc:signin'
+
+    def get(self, request, slug, *args, **kwargs):
+        pk_user = self.request.user.pk
+        cart = get_object_or_404(Cart, user__id=pk_user)
+        return render(request, 'delivery_app/cart.html', {'cart': cart})
+
+
+@login_required
+def add_to_cart(request, dish_id: int):
+    """Добавление блюда в корзину для заказа"""
+    cart = Cart()
+    pk_user = request.user.pk
+    dish = get_object_or_404(Dish, pk=dish_id)
+    time_now = timezone.now()
+    cart.published_at = time_now
+    cart.dish = dish
+    cart.user = pk_user
+    cart.save()
+    return redirect('cart')

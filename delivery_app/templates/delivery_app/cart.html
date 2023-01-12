@@ -1,0 +1,14 @@
+{% extends "base/basic.html" %}
+
+{% block title %}Корзина | Березка{% endblock %}
+
+
+{% block content %}
+
+Корзина
+
+{% for el in cart %}
+    {{ el }}
+{% endfor %}
+
+{% endblock %}
