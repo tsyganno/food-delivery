@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.shortcuts import reverse
+from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponseRedirect
 from django.views import View
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
@@ -51,15 +53,16 @@ class CartView(LoginRequiredMixin, View):
         return render(request, 'delivery_app/cart.html', {'cart': cart})
 
 
-@login_required
-def add_to_cart(request, dish_id: int):
+class AddToCartView(LoginRequiredMixin, View):
     """Добавление блюда в корзину для заказа"""
-    cart = Cart()
-    pk_user = request.user.pk
-    dish = get_object_or_404(Dish, pk=dish_id)
-    time_now = timezone.now()
-    cart.published_at = time_now
-    cart.dish = dish
-    cart.user = pk_user
-    cart.save()
-    return redirect('cart')
+    login_url = 'acc:signin'
+
+    def get(self, request, *args, **kwargs):
+        cart = Cart()
+        cart.published_at = timezone.now()
+        cart.dish = get_object_or_404(Dish, pk=self.kwargs['dish_id'])
+        cart.user = self.request.user
+        cart.save()
+        category_obj_pk = get_object_or_404(Dish, pk=self.kwargs['dish_id']).category.pk
+        category_obj_slug = get_object_or_404(Dish, pk=self.kwargs['dish_id']).category.url_category
+        return HttpResponseRedirect(reverse('app:category', args=[category_obj_pk, category_obj_slug]))
