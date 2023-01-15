@@ -10,15 +10,20 @@
 </head>
 <header class="container mt-3">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand mr-4 font-weight-bold" href="{% url 'app:index' %}">Главаная</a>
+      <a class="navbar-brand mr-4 font-weight-bold" href="{% url 'app:index' %}">Главная</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         <ul class="navbar-nav col-10">
+          {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="#">Все блюда</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'app:cart' %}">Корзина</a>
+          </li>
+          {% endif %}
         </ul>
         <ul class="navbar-nav col-2 justify-content-end">
           <li class="nav-item active">
@@ -40,7 +45,7 @@
             </li>
 
             {% else %}
-            <a href="{% url 'acc:signin' %}" class="nav-link font-weight-bold">Вход</a>
+            <a class="navbar-brand mr-4 font-weight-bold" href="{% url 'acc:signin' %}">Вход</a>
             {% endif %}
 
 

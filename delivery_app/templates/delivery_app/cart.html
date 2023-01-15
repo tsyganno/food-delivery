@@ -5,10 +5,31 @@
 
 {% block content %}
 
-Корзина
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <hr>
+            <ol class="breadcrumb">
+                <h4 class="breadcrumb-item">Ваш заказ</h4>
+                <h4 class="breadcrumb-item active" aria-current="page"><a href="{{ request.META.HTTP_REFERER }}">Назад</a></h4>
+            </ol>
+            <hr>
+        </div>
+    </div>
 
-{% for el in cart %}
-    {{ el }}
-{% endfor %}
+        <form method="post" action="{% url 'app:remove_from_cart' %}">
+        {% csrf_token %}
+            {% for el in cart %}
+            <input type="radio" name="variant{{ forloop.parentloop.counter }}" id="variant{{ forloop.counter }}" value="{{ el.pk }}" />
+            <label for="variant{{ forloop.counter }}"><div class="mr-auto p-2 lead">{{ el.dish.title }}. Цена: {{ el.dish.price }} руб.</div></label><br />
+        <br>
+            {% endfor %}
+            <input type="submit" class="btn btn-sm btn-outline-secondary" value="Удалить блюдо">
+        </form>
+    <br>
+    <h5>Общая стоимость заказа составляет: {{ order_price }} руб.</h5>
+    <hr>
+</div>
+</div>
 
 {% endblock %}
