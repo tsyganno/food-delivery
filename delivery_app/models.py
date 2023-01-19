@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
+
 
 from ckeditor_uploader.fields import RichTextUploadingField
 
@@ -37,10 +39,11 @@ class Dish(models.Model):
 
 
 class Cart(models.Model):
-    published_at = models.DateTimeField(verbose_name='Заказ создан')
+    published_at = models.DateTimeField(default=now(), verbose_name='Заказ создан')
     active_status = models.BooleanField(default=True, verbose_name='Статус')
-    dish = models.ForeignKey(Dish, on_delete=models.CASCADE, verbose_name='Блюдо')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    count_of_dishes = models.IntegerField(default=1, verbose_name='Количество блюд')
+    dish = models.ForeignKey(Dish, null=True, on_delete=models.CASCADE, verbose_name='Блюдо')
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, verbose_name='Пользователь')
 
     def __str__(self):
         return 'Заказ клиента'

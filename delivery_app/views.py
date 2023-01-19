@@ -1,14 +1,15 @@
-from django.shortcuts import render, redirect
-from django.shortcuts import reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponseRedirect
 from django.views import View
-from django.views.generic import DeleteView
+from django.views.generic import DeleteView, ListView, DetailView, UpdateView
+from django.views.generic.edit import CreateView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 
 from delivery_app.models import Category, Dish, Cart
+from delivery_app.forms import CartForm
 
 
 def add_to_shopping_cart(request, pk: int):
@@ -60,25 +61,45 @@ class CartView(LoginRequiredMixin, View):
         cart = Cart.objects.filter(user__id=pk_user)
         order_price = 0
         for el in cart:
-            order_price += el.dish.price
+            count_price = el.dish.price * el.count_of_dishes
+            order_price += count_price
         return render(request, 'delivery_app/cart.html', {'cart': cart, 'order_price': order_price})
 
 
-class AddToCartView(LoginRequiredMixin, View):
-    """Добавление блюда в корзину для заказа"""
-    login_url = 'acc:signin'
+class AddToCartFromDishView(LoginRequiredMixin, CreateView):
+    """Добавление блюда в корзину для заказа со страницы 'Блюдо'"""
+    login_url = 'accounts:login'
+    template_name = 'delivery_app/adding_to_cart.html'
+    model = Cart
+    form_class = CartForm
 
-    def post(self, request, slug, *args, **kwargs):
-        add_to_shopping_cart(request, self.kwargs['dish_id'])
-        category_obj_pk = get_object_or_404(Dish, pk=self.kwargs['dish_id']).pk
-        category_obj_slug = get_object_or_404(Dish, pk=self.kwargs['dish_id']).url_dish
-        return HttpResponseRedirect(reverse('app:dish', args=[category_obj_pk, category_obj_slug]))
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.dish = get_object_or_404(Dish, pk=self.kwargs['dish_id'])
+        return super(AddToCartFromDishView, self).form_valid(form)
 
-    def get(self, request, slug, *args, **kwargs):
-        add_to_shopping_cart(request, self.kwargs['dish_id'])
+    def get_success_url(self):
+        dish_pk = get_object_or_404(Dish, pk=self.kwargs['dish_id']).pk
+        dish_slug = get_object_or_404(Dish, pk=self.kwargs['dish_id']).url_dish
+        return reverse('app:dish', args=[dish_pk, dish_slug])
+
+
+class AddToCartFromCategoryView(LoginRequiredMixin, CreateView):
+    """Добавление блюда в корзину для заказа со страницы 'Категория'"""
+    login_url = 'accounts:login'
+    template_name = 'delivery_app/adding_to_cart.html'
+    model = Cart
+    form_class = CartForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.dish = get_object_or_404(Dish, pk=self.kwargs['dish_id'])
+        return super(AddToCartFromCategoryView, self).form_valid(form)
+
+    def get_success_url(self):
         category_obj_pk = get_object_or_404(Dish, pk=self.kwargs['dish_id']).category.pk
         category_obj_slug = get_object_or_404(Dish, pk=self.kwargs['dish_id']).category.url_category
-        return HttpResponseRedirect(reverse('app:category', args=[category_obj_pk, category_obj_slug]))
+        return reverse('app:category', args=[category_obj_pk, category_obj_slug])
 
 
 class RemoveFromCartView(LoginRequiredMixin, DeleteView):

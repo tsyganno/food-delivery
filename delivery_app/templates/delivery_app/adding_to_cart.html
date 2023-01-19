@@ -1,0 +1,28 @@
+{% extends "base/basic.html" %}
+
+{% block title %}Добавление в корзину | Березка{% endblock %}
+
+{% block content %}
+
+        <div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <hr>
+            <ol class="breadcrumb">
+                <h4 class="breadcrumb-item">{{ dish.title|safe }}</h4>
+                <h4 class="breadcrumb-item active" aria-current="page"><a href="#">Назад</a></h4>
+            </ol>
+            <hr>
+                {% load crispy_forms_tags %}
+
+              {% crispy form %}
+            <hr>
+        </div>
+    </div>
+    <hr>
+</div>
+</div>
+
+
+
+{% endblock %}

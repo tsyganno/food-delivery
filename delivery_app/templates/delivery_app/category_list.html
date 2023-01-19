@@ -23,7 +23,7 @@
                   </div>
                 </div>
                 <br>
-                <a href="{% url 'app:add_to_cart' dish.pk dish.url_dish %}" class="btn btn-sm btn-outline-secondary">Добавить в корзину</a>
+                <a href="{% url 'app:add_to_cart_from_category' dish.pk dish.url_dish %}" name='post' class="btn btn-sm btn-outline-secondary">Добавить в корзину</a>
               </div>
             </div>
           </div>

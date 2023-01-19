@@ -21,7 +21,7 @@
         {% csrf_token %}
             {% for el in cart %}
             <input type="radio" name="variant{{ forloop.parentloop.counter }}" id="variant{{ forloop.counter }}" value="{{ el.pk }}" />
-            <label for="variant{{ forloop.counter }}"><div class="mr-auto p-2 lead">{{ el.dish.title }}. Цена: {{ el.dish.price }} руб.</div></label><br />
+            <label for="variant{{ forloop.counter }}"><div class="mr-auto p-2 lead">{{ el.dish.title }}. Цена: {{ el.dish.price }} руб. Количество: {{ el.count_of_dishes }} шт.</div></label><br />
         <br>
             {% endfor %}
             <input type="submit" class="btn btn-sm btn-outline-secondary" value="Удалить блюдо">

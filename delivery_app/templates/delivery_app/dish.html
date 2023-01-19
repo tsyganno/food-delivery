@@ -20,10 +20,7 @@
             <hr>
         </div>
     </div>
-        <form method="post" enctype="multipart/form-data" action="{% url 'app:add_to_cart' dish.pk dish.url_dish %}">
-             {% csrf_token %}
-             <input type="submit" class="btn btn-sm btn-outline-secondary" value="Добавить в корзину">
-        </form>
+        <a href="{% url 'app:add_to_cart_from_dish' dish.pk dish.url_dish %}" name='post' class="btn btn-sm btn-outline-secondary">Добавить в корзину</a>
     <hr>
 </div>
 </div>
