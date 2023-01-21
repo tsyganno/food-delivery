@@ -6,18 +6,11 @@ from django.views.generic.edit import CreateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils import timezone
+from django.utils.timezone import now
+from django.db.models import Sum
 
 from delivery_app.models import Category, Dish, Cart
 from delivery_app.forms import CartForm
-
-
-def add_to_shopping_cart(request, pk: int):
-    cart = Cart()
-    cart.published_at = timezone.now()
-    cart.dish = get_object_or_404(Dish, pk=pk)
-    cart.user = request.user
-    cart.save()
 
 
 class IndexView(View):
@@ -58,7 +51,7 @@ class CartView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         pk_user = self.request.user.pk
-        cart = Cart.objects.filter(user__id=pk_user)
+        cart = Cart.objects.filter(user__id=pk_user, active_status=True)
         order_price = 0
         for el in cart:
             count_price = el.dish.price * el.count_of_dishes
@@ -74,8 +67,14 @@ class AddToCartFromDishView(LoginRequiredMixin, CreateView):
     form_class = CartForm
 
     def form_valid(self, form):
+        form.instance.published_at = now()
         form.instance.user = self.request.user
         form.instance.dish = get_object_or_404(Dish, pk=self.kwargs['dish_id'])
+        cart = Cart.objects.filter(user__id=self.request.user.pk, active_status=True, dish__id=self.kwargs['dish_id'])
+        total = sum([el.count_of_dishes for el in cart])
+        if len(cart) > 0:
+            Cart.objects.filter(dish__title=cart.first().dish.title).delete()
+            form.instance.count_of_dishes += total
         return super(AddToCartFromDishView, self).form_valid(form)
 
     def get_success_url(self):
@@ -92,8 +91,14 @@ class AddToCartFromCategoryView(LoginRequiredMixin, CreateView):
     form_class = CartForm
 
     def form_valid(self, form):
+        form.instance.published_at = now()
         form.instance.user = self.request.user
         form.instance.dish = get_object_or_404(Dish, pk=self.kwargs['dish_id'])
+        cart = Cart.objects.filter(user__id=self.request.user.pk, active_status=True, dish__id=self.kwargs['dish_id'])
+        total = sum([el.count_of_dishes for el in cart])
+        if len(cart) > 0:
+            Cart.objects.filter(dish__title=cart.first().dish.title).delete()
+            form.instance.count_of_dishes += total
         return super(AddToCartFromCategoryView, self).form_valid(form)
 
     def get_success_url(self):
