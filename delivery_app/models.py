@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from ckeditor_uploader.fields import RichTextUploadingField
 
@@ -39,7 +40,7 @@ class Dish(models.Model):
 class Cart(models.Model):
     published_at = models.DateTimeField(verbose_name='Заказ создан')
     active_status = models.BooleanField(default=True, verbose_name='Статус')
-    count_of_dishes = models.IntegerField(default=1, verbose_name='Количество блюд')
+    count_of_dishes = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(1000), MinValueValidator(1)], verbose_name='Количество блюд')
     dish = models.ForeignKey(Dish, null=True, on_delete=models.CASCADE, verbose_name='Блюдо')
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, verbose_name='Пользователь')
 
