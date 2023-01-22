@@ -1,7 +1,7 @@
 from django import forms
 from delivery_app.models import Cart
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, HTML
 
 
 class CartForm(forms.ModelForm):
@@ -20,6 +20,7 @@ class CartForm(forms.ModelForm):
             Fieldset(
                 '',
                 'count_of_dishes',
+                HTML('<br>'),
             ),
             ButtonHolder(Submit('submit', 'Добавить блюдо'))
         )

@@ -10,13 +10,12 @@
         <div class="col-lg-8">
             <hr>
             <ol class="breadcrumb">
-                <h4 class="breadcrumb-item">Ваш заказ</h4>
-                <h4 class="breadcrumb-item active" aria-current="page"><a href="{{ request.META.HTTP_REFERER }}">Назад</a></h4>
+                <h4 class="breadcrumb-item">Ваш заказ:</h4>
             </ol>
             <hr>
         </div>
     </div>
-
+        {% if cart %}
         <form method="post" action="{% url 'app:remove_from_cart' %}">
         {% csrf_token %}
             {% for el in cart %}
@@ -26,6 +25,11 @@
             {% endfor %}
             <input type="submit" class="btn btn-sm btn-outline-secondary" value="Удалить блюдо">
         </form>
+        {% else %}
+            <h5>У вас еще нет товара в корзине. Добавьте товар.</h5>
+        {% endif %}
+    <br>
+    <br>
     <br>
     <h5>Общая стоимость заказа составляет: {{ order_price }} руб.</h5>
     <hr>
