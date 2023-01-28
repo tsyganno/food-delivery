@@ -59,6 +59,20 @@ class CartView(LoginRequiredMixin, View):
         return render(request, 'delivery_app/cart.html', {'cart': cart, 'order_price': order_price})
 
 
+class PaymentMethodView(LoginRequiredMixin, View):
+    """Страница с выбором способа оплаты"""
+    login_url = 'acc:signin'
+
+    def get(self, request, *args, **kwargs):
+        pk_user = self.request.user.pk
+        cart = Cart.objects.filter(user__id=pk_user, active_status=True)
+        order_price = 0
+        for el in cart:
+            count_price = el.dish.price * el.count_of_dishes
+            order_price += count_price
+        return render(request, 'delivery_app/payment_method.html', {'cart': cart, 'order_price': order_price})
+
+
 class AddToCartFromDishView(LoginRequiredMixin, CreateView):
     """Добавление блюда в корзину для заказа со страницы 'Блюдо'"""
     login_url = 'accounts:login'
@@ -113,9 +127,12 @@ class RemoveFromCartView(LoginRequiredMixin, DeleteView):
     model = Cart
 
     def get_queryset(self):
-        owner = self.request.user.pk
-        variant = int(self.request.POST.getlist('variant')[0])
-        return self.model.objects.filter(user__id=owner, id=variant)
+        try:
+            owner = self.request.user.pk
+            variant = int(self.request.POST.getlist('variant')[0])
+            return self.model.objects.filter(user__id=owner, id=variant)
+        except IndexError:
+            return self.model.objects.filter(user__id=-1, id=-1)
 
     def get_object(self, queryset=None):
         return self.get_queryset()

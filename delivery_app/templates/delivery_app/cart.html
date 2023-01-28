@@ -25,6 +25,8 @@
             {% endfor %}
             <input type="submit" class="btn btn-sm btn-outline-secondary" value="Удалить блюдо">
         </form>
+        <hr>
+        <a href="{% url 'app:payment_method' %}" name='post' class="btn btn-sm btn-outline-secondary">Оплатить заказ</a>
         {% else %}
             <h5>У вас еще нет товара в корзине. Добавьте товар.</h5>
         {% endif %}
