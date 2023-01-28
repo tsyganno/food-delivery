@@ -26,15 +26,13 @@
             <input type="submit" class="btn btn-sm btn-outline-secondary" value="Удалить блюдо">
         </form>
         <hr>
+        <h5>Общая стоимость заказа составляет: {{ order_price }} руб.</h5>
+        <hr>
         <a href="{% url 'app:payment_method' %}" name='post' class="btn btn-sm btn-outline-secondary">Оплатить заказ</a>
         {% else %}
             <h5>У вас еще нет товара в корзине. Добавьте товар.</h5>
         {% endif %}
-    <br>
-    <br>
-    <br>
-    <h5>Общая стоимость заказа составляет: {{ order_price }} руб.</h5>
-    <hr>
+
 </div>
 </div>
 

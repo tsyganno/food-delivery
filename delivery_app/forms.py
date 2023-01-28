@@ -8,7 +8,6 @@ class CartForm(forms.ModelForm):
 
     class Meta:
         model = Cart
-
         fields = ('count_of_dishes',)
 
     def __init__(self, *args, **kwargs):
@@ -20,7 +19,6 @@ class CartForm(forms.ModelForm):
             Fieldset(
                 '',
                 'count_of_dishes',
-                HTML('<br>'),
             ),
             ButtonHolder(Submit('submit', 'Добавить блюдо'))
         )

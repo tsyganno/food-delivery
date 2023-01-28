@@ -1,36 +1,17 @@
-{% extends "base/basic.html" %}
+{% extends "layout/layout.html" %}
+{% load crispy_forms_tags %}
 
-{% block title %}Вход | Березка{% endblock %}
-
-{% block content %}
-    <div class="text-center">
-        {% if form.errors %}
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endif %}
-        <form class="form-signin" method="post" action="{% url 'acc:signin' %}">
-            {% csrf_token %}
-            <h1 class="h3 mb-3 mt-3 font-weight-normal">Пожалуйста укажите логин и пароль</h1>
-            <div class="col-md-4 mb-3 mx-auto">
-                <label for="inputUsername" class="sr-only">Имя пользователя</label>
-                {{ form.username }}
-                <br>
-                <label for="inputPassword" class="sr-only">Пароль</label>
-                {{ form.password }}
-                <br>
-                <button class="btn mt-2 btn-lg btn-primary btn-block" type="submit">Войти</button>
-            </div>
-        </form>
+{% block main %}
+    <div class="card">
+        <div class="card-body">
+        <h4 class="card-title">Войдите в аккаунт</h4>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}">
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary btn-block">Войти</button>
+            </form>
+        </div>
     </div>
-<p align="center">Нет аккаунта? <a href="{% url 'acc:signup' %}">Зарегистрируйтесь!</a></p>
+    <p align="center">Нет аккаунта? <a href="{% url 'acc:signup' %}">Зарегистрируйтесь!</a></p>
 {% endblock %}

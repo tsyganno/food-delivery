@@ -164,4 +164,6 @@ CKEDITOR_CONFIGS = {
 
 ###################################
 
-LOGOUT_REDIRECT_URL = "app:index"
+LOGIN_REDIRECT_URL = 'app:index'
+LOGOUT_REDIRECT_URL = 'app:index'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

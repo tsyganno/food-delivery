@@ -1,0 +1,21 @@
+<!doctype  html>
+<html  lang="en">
+<head>
+<link  rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"  crossorigin="anonymous">
+<title>Авторизация</title>
+</head>
+<body>
+  <div  class="container">
+    <div  class="row justify-content-center">
+      <div  class="col-4">
+        <br>
+      <a href="{% url 'app:index' %}"><h1  class="text-center">Доставка еды "Берёзка"</h1></a>
+        <br>
+        <br>
+      {% block main %}
+      {% endblock %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>
