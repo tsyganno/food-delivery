@@ -69,7 +69,7 @@ class Order(models.Model):
         (BANK_TRANSFER, 'Оплата переводом через банк'),
     ))
     payment_method = models.CharField(max_length=50, choices=TYPE_DICT.items(), verbose_name='Способ оплаты')
-    user_phone = models.CharField(default='', max_length=50, verbose_name='Номер телефона')
+    user_phone = models.CharField(max_length=50, verbose_name='Номер телефона')
     user_comment = models.TextField(default='', verbose_name='Комментарий от пользователя')
 
     def __str__(self):

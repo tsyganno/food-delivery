@@ -1,7 +1,7 @@
 from django.urls import path
 
 from delivery_app.views import IndexView, CategoryView, DishView, CartView, AddToCartFromDishView, \
-    AddToCartFromCategoryView, RemoveFromCartView, CheckoutView
+    AddToCartFromCategoryView, RemoveFromCartView, CheckoutView, SuccessView
 
 app_name = 'app'
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
     path('remove_from_cart/', RemoveFromCartView.as_view(), name='remove_from_cart'),
     path('add_to_cart_from_category/<int:dish_id>/<slug>/', AddToCartFromDishView.as_view(), name='add_to_cart_from_dish'),
     path('add_to_cart_from_dish/<int:dish_id>/<slug>/', AddToCartFromCategoryView.as_view(), name='add_to_cart_from_category'),
+    path('success/', SuccessView.as_view(), name='success'),
 ]

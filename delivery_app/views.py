@@ -72,15 +72,18 @@ class CheckoutView(LoginRequiredMixin, CreateView):
         cart = Cart.objects.filter(user__id=self.request.user.pk, active_status=True)
         list_of_dishes = ''
         count = 1
+        order_price = 0
         for el in cart:
             list_of_dishes += f'{count}. Блюдо: {el.dish.title}, цена: {el.dish.price}, количество: {el.count_of_dishes}\n'
+            order_price += el.dish.price * el.count_of_dishes
             Cart.objects.filter(pk=el.pk).update(active_status=False)
             count += 1
+        list_of_dishes += f'Общая стоимость заказа составляет: {order_price}'
         form.instance.list_of_dishes = list_of_dishes
         return super(CheckoutView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('app:index')
+        return reverse('app:success')
 
 
 class AddToCartFromDishView(LoginRequiredMixin, CreateView):
@@ -149,3 +152,9 @@ class RemoveFromCartView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('app:cart')
+
+
+class SuccessView(View):
+    """Страница с благодарностью за заказ"""
+    def get(self, request, *args, **kwargs):
+        return render(request, 'delivery_app/success.html', context={'title': 'Спасибо'})

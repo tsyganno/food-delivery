@@ -1,6 +1,6 @@
 {% extends "base/basic.html" %}
 
-{% block title %}Корзина | Березка{% endblock %}
+{% block title %}Оформление заказа | Березка{% endblock %}
 
 
 {% block content %}
@@ -11,12 +11,12 @@
             <hr>
             <ol class="breadcrumb">
             <h4 class="breadcrumb-item">Оформление заказа</h4>
-            <h4 class="breadcrumb-item active" aria-current="page"><a href="#">Назад</a></h4>
+            <h4 class="breadcrumb-item active" aria-current="page"><a href="{% url 'app:cart' %}">Назад</a></h4>
             </ol>
             <hr>
         </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-5">
         {% load crispy_forms_tags %}
         {% crispy form %}
     </div>
