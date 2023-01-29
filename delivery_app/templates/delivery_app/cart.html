@@ -28,7 +28,7 @@
         <hr>
         <h5>Общая стоимость заказа составляет: {{ order_price }} руб.</h5>
         <hr>
-        <a href="#" name='post' class="btn btn-sm btn-outline-secondary">Оформить заказ</a>
+        <a href="{% url 'app:checkout' %}" name='post' class="btn btn-sm btn-outline-secondary">Оформить заказ</a>
         {% else %}
             <h5>У вас еще нет товара в корзине. Добавьте товар.</h5>
         {% endif %}

@@ -9,8 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.timezone import now
 from django.db.models import Sum
 
-from delivery_app.models import Category, Dish, Cart
-from delivery_app.forms import CartForm
+from delivery_app.models import Category, Dish, Cart, Order
+from delivery_app.forms import CartForm, OrderForm
 
 
 class IndexView(View):
@@ -57,6 +57,30 @@ class CartView(LoginRequiredMixin, View):
             count_price = el.dish.price * el.count_of_dishes
             order_price += count_price
         return render(request, 'delivery_app/cart.html', {'cart': cart, 'order_price': order_price})
+
+
+class CheckoutView(LoginRequiredMixin, CreateView):
+    """Оформление заказа"""
+    login_url = 'accounts:login'
+    template_name = 'delivery_app/checkout.html'
+    model = Order
+    form_class = OrderForm
+
+    def form_valid(self, form):
+        form.instance.order_creation_time = now()
+        form.instance.owner = self.request.user
+        cart = Cart.objects.filter(user__id=self.request.user.pk, active_status=True)
+        list_of_dishes = ''
+        count = 1
+        for el in cart:
+            list_of_dishes += f'{count}. Блюдо: {el.dish.title}, цена: {el.dish.price}, количество: {el.count_of_dishes}\n'
+            Cart.objects.filter(pk=el.pk).update(active_status=False)
+            count += 1
+        form.instance.list_of_dishes = list_of_dishes
+        return super(CheckoutView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('app:index')
 
 
 class AddToCartFromDishView(LoginRequiredMixin, CreateView):

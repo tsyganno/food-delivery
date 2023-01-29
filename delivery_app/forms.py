@@ -1,7 +1,29 @@
 from django import forms
-from delivery_app.models import Cart
+from delivery_app.models import Cart, Order
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, HTML
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
+
+
+class OrderForm(forms.ModelForm):
+
+    class Meta:
+        model = Order
+        fields = ('payment_method', 'user_phone', 'user_comment', )
+
+    def __init__(self, *args, **kwargs):
+        super(OrderForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'payment_method',
+                'user_phone',
+                'user_comment',
+            ),
+            ButtonHolder(Submit('submit', 'Оформить заказ'))
+        )
 
 
 class CartForm(forms.ModelForm):
