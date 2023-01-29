@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -38,11 +39,38 @@ class Dish(models.Model):
 
 
 class Cart(models.Model):
-    published_at = models.DateTimeField(verbose_name='Заказ создан')
-    active_status = models.BooleanField(default=True, verbose_name='Статус')
+    published_at = models.DateTimeField(verbose_name='Блюдо добавлено в корзину')
+    active_status = models.BooleanField(default=True, verbose_name='Статус блюда в корзине')
     count_of_dishes = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(1000), MinValueValidator(1)], verbose_name='Количество блюд')
     dish = models.ForeignKey(Dish, null=True, on_delete=models.CASCADE, verbose_name='Блюдо')
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, verbose_name='Пользователь')
+
+    def __str__(self):
+        return 'Блюдо в корзине'
+
+    class Meta:
+        verbose_name_plural = 'Блюда в корзине'
+        verbose_name = 'Блюдо в корзине'
+        ordering = ['published_at']
+
+
+class Order(models.Model):
+    PAYMENT_BY_CARD = 'Оплата картой'
+    CASH_PAYMENT = 'Оплата наличными'
+    BANK_TRANSFER = 'Оплата переводом через банк'
+
+    owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE, verbose_name='Пользователь')
+    order_creation_time = models.DateTimeField(verbose_name='Заказ создан')
+    list_of_dishes = models.TextField(verbose_name='Блюда в заказе')
+    order_status = models.BooleanField(default=True, verbose_name='Статус заказа')
+    TYPE_DICT = OrderedDict((
+        (PAYMENT_BY_CARD, 'Оплата картой'),
+        (CASH_PAYMENT, 'Оплата наличными'),
+        (BANK_TRANSFER, 'Оплата переводом через банк'),
+    ))
+    payment_method = models.CharField(max_length=50, choices=TYPE_DICT.items(), verbose_name='Способ оплаты')
+    user_phone = models.CharField(default='', max_length=50, verbose_name='Номер телефона')
+    user_comment = models.TextField(default='', verbose_name='Комментарий от пользователя')
 
     def __str__(self):
         return 'Заказ клиента'
@@ -50,4 +78,5 @@ class Cart(models.Model):
     class Meta:
         verbose_name_plural = 'Заказы клиентов'
         verbose_name = 'Заказ клиента'
-        ordering = ['published_at']
+        ordering = ['order_creation_time']
+

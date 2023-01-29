@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from delivery_app.models import Category, Dish
+from delivery_app.models import Category, Dish, Cart, Order
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -17,5 +17,19 @@ class DishAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description_dish',)
 
 
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('published_at', 'active_status', 'count_of_dishes', 'dish', 'user',)
+    list_display_links = ('active_status', 'count_of_dishes')
+    search_fields = ('active_status', 'count_of_dishes',)
+
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'order_creation_time', 'list_of_dishes', 'order_status', 'payment_method', 'user_phone', 'user_comment',)
+    list_display_links = ('list_of_dishes', 'order_status', 'payment_method',)
+    search_fields = ('list_of_dishes', 'order_status', 'payment_method',)
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Dish, DishAdmin)
+admin.site.register(Cart, CartAdmin)
+admin.site.register(Order, OrderAdmin)

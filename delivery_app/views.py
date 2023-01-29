@@ -59,20 +59,6 @@ class CartView(LoginRequiredMixin, View):
         return render(request, 'delivery_app/cart.html', {'cart': cart, 'order_price': order_price})
 
 
-class PaymentMethodView(LoginRequiredMixin, View):
-    """Страница с выбором способа оплаты"""
-    login_url = 'acc:signin'
-
-    def get(self, request, *args, **kwargs):
-        pk_user = self.request.user.pk
-        cart = Cart.objects.filter(user__id=pk_user, active_status=True)
-        order_price = 0
-        for el in cart:
-            count_price = el.dish.price * el.count_of_dishes
-            order_price += count_price
-        return render(request, 'delivery_app/payment_method.html', {'cart': cart, 'order_price': order_price})
-
-
 class AddToCartFromDishView(LoginRequiredMixin, CreateView):
     """Добавление блюда в корзину для заказа со страницы 'Блюдо'"""
     login_url = 'accounts:login'
