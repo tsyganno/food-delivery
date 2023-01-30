@@ -70,6 +70,7 @@ class Order(models.Model):
     ))
     payment_method = models.CharField(max_length=50, choices=TYPE_DICT.items(), verbose_name='Способ оплаты')
     user_phone = models.CharField(max_length=50, verbose_name='Номер телефона')
+    address = models.CharField(max_length=100, verbose_name='Адрес (не больше 100 символов)')
     user_comment = models.TextField(default='', verbose_name='Комментарий от пользователя')
 
     def __str__(self):

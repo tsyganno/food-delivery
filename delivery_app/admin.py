@@ -24,7 +24,7 @@ class CartAdmin(admin.ModelAdmin):
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'order_creation_time', 'list_of_dishes', 'order_status', 'payment_method', 'user_phone', 'user_comment',)
+    list_display = ('owner', 'order_creation_time', 'list_of_dishes', 'order_status', 'payment_method', 'user_phone', 'address', 'user_comment',)
     list_display_links = ('list_of_dishes', 'order_status', 'payment_method',)
     search_fields = ('list_of_dishes', 'order_status', 'payment_method',)
 

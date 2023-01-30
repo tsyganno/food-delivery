@@ -8,7 +8,7 @@ class OrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ('payment_method', 'user_phone', 'user_comment', )
+        fields = ('payment_method', 'user_phone', 'address', 'user_comment', )
 
     def __init__(self, *args, **kwargs):
         super(OrderForm, self).__init__(*args, **kwargs)
@@ -20,6 +20,7 @@ class OrderForm(forms.ModelForm):
                 '',
                 'payment_method',
                 'user_phone',
+                'address',
                 'user_comment',
             ),
             ButtonHolder(Submit('submit', 'Оформить заказ'))
