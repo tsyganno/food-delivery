@@ -9,7 +9,7 @@
             <hr>
             <ol class="breadcrumb">
                 <h4 class="breadcrumb-item">{{ dish.title|safe }}</h4>
-                <h4 class="breadcrumb-item active" aria-current="page"><a href="{% url 'app:category' dish.category.pk dish.category.url_category %}">Назад</a></h4>
+                <h4 class="breadcrumb-item active" aria-current="page"><a href="{{ request.META.HTTP_REFERER }}">Назад</a></h4>
             </ol>
             <hr>
             <img class="img-fluid rounded " src="{{ dish.image_dish.url }}" alt="">

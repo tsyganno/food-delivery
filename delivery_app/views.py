@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404
-from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponseRedirect
+from django.shortcuts import render, reverse, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.views import View
-from django.views.generic import DeleteView, ListView, DetailView, UpdateView
+from django.views.generic import DeleteView
 from django.views.generic.edit import CreateView
-from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.timezone import now
-from django.db.models import Sum
+from django.db.models import Q
 
 from delivery_app.models import Category, Dish, Cart, Order
 from delivery_app.forms import CartForm, OrderForm
@@ -154,7 +154,28 @@ class RemoveFromCartView(LoginRequiredMixin, DeleteView):
         return reverse('app:cart')
 
 
-class SuccessView(View):
+class SuccessView(LoginRequiredMixin, View):
     """Страница с благодарностью за заказ"""
+    login_url = 'acc:signin'
+
     def get(self, request, *args, **kwargs):
         return render(request, 'delivery_app/success.html', context={'title': 'Спасибо'})
+
+
+class SearchResultsView(LoginRequiredMixin, View):
+    """Поиск блюда или категории"""
+    login_url = 'acc:signin'
+
+    def get(self, request, *args, **kwargs):
+        query = self.request.GET.get('q')
+        print(query)
+        if query and query != '':
+            print('lol')
+            dish_results = Dish.objects.filter(Q(title__icontains=query) | Q(description_dish__icontains=query))
+            category_results = Category.objects.filter(Q(name__icontains=query) | Q(description_category__icontains=query))
+            all_things = list(dish_results) + list(category_results)
+            paginator = Paginator(all_things, 6)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            return render(request, 'delivery_app/search.html', context={'title': 'Поиск', 'results': page_obj, 'count': paginator.count})
+        return HttpResponseRedirect(reverse('app:index'))
