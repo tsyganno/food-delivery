@@ -168,13 +168,12 @@ class SearchResultsView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         query = self.request.GET.get('q')
-        print(query)
         if query and query != '':
-            print('lol')
             dish_results = Dish.objects.filter(Q(title__icontains=query) | Q(description_dish__icontains=query))
-            category_results = Category.objects.filter(Q(name__icontains=query) | Q(description_category__icontains=query))
+            category_results = Category.objects.filter(Q(title__icontains=query) | Q(description_category__icontains=query))
             all_things = list(dish_results) + list(category_results)
-            paginator = Paginator(all_things, 6)
+            sorted_things = sorted(all_things, key=lambda x: x.title)
+            paginator = Paginator(sorted_things, 6)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
             return render(request, 'delivery_app/search.html', context={'title': 'Поиск', 'results': page_obj, 'count': paginator.count})

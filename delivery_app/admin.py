@@ -4,10 +4,10 @@ from delivery_app.models import Category, Dish, Cart, Order
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'url_category': ('name',)}
-    list_display = ('name', 'url_category', 'description_category', 'image_category',)
-    list_display_links = ('name', 'description_category')
-    search_fields = ('name', 'description_category',)
+    prepopulated_fields = {'url_category': ('title',)}
+    list_display = ('title', 'url_category', 'description_category', 'image_category',)
+    list_display_links = ('title', 'description_category')
+    search_fields = ('title', 'description_category',)
 
 
 class DishAdmin(admin.ModelAdmin):

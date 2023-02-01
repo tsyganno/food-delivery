@@ -14,12 +14,12 @@
             </ol>
             <p class="lead">Найдено записей: {{ count }}</p>
             {% for result in results %}
-                {% if result.title %}
+                {% if result.url_dish %}
                     <a href="{% url 'app:dish' result.pk result.url_dish %}"><h2>{{ result.title }}</h2></a>
                     <p>{{ result.description_dish|safe }}</p>
                     <hr>
-                {% elif result.name %}
-                    <a href="{% url 'app:category' result.pk result.url_category %}"><h2>{{ result.name }}</h2></a>
+                {% elif result.url_category %}
+                    <a href="{% url 'app:category' result.pk result.url_category %}"><h2>{{ result.title }}</h2></a>
                     <p>{{ result.description_category|safe }}</p>
                     <hr>
                 {% endif %}

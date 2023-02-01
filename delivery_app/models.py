@@ -7,18 +7,18 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Название категории')
+    title = models.CharField(max_length=100, verbose_name='Название категории')
     url_category = models.SlugField()
     description_category = RichTextUploadingField(verbose_name='Описание категории')
     image_category = models.ImageField()
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name_plural = 'Категории'
         verbose_name = 'Категория'
-        ordering = ['name']
+        ordering = ['title']
 
 
 class Dish(models.Model):
