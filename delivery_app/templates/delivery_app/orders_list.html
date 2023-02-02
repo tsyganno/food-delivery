@@ -1,0 +1,31 @@
+{% extends "base/basic.html" %}
+
+{% block title %}Мои заказы | Березка{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <hr>
+            <ol class="breadcrumb">
+                <h4 class="breadcrumb-item active" aria-current="page"><a href="{{ request.META.HTTP_REFERER }}">Назад</a></h4>
+            </ol>
+            <p class="lead">Найдено записей: {{ count }}</p>
+            {% for order in orders %}
+                <ol>
+                    <li>Дата и время заказа: {{ order.order_creation_time }}</li>
+                    <li>Блюда в заказе: {{ order.list_of_dishes }}</li>
+                    <li>Способ оплаты: {{ order.payment_method }}</li>
+                    <li>Указанный номер телефона: {{ order.user_phone }}</li>
+                    <li>Указанный адрес: {{ order.address }}</li>
+                    <li>Комментарий: {{ order.user_comment }}</li>
+                </ol>
+            <hr>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

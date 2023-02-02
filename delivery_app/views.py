@@ -23,6 +23,24 @@ class IndexView(View):
         return render(request, 'delivery_app/index.html', {'page_obj': page_obj})
 
 
+class AllDishesView(View):
+    """Страница со всеми блюдами"""
+    def get(self, request, *args, **kwargs):
+        dishes = Dish.objects.all()
+        paginator = Paginator(dishes, 6)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'delivery_app/dish_list.html', {'page_obj': page_obj})
+
+
+class MyOrdersView(View):
+    """Все заказы пользователя"""
+    def get(self, request, *args, **kwargs):
+        pk_user = self.request.user.pk
+        orders = Order.objects.filter(owner__id=pk_user)
+        return render(request, 'delivery_app/orders_list.html', {'orders': orders, 'count': len(orders)})
+
+
 class CategoryView(LoginRequiredMixin, View):
     """Страница с блюдами, относящимся к определенной категории"""
     login_url = 'acc:signin'
@@ -74,11 +92,11 @@ class CheckoutView(LoginRequiredMixin, CreateView):
         count = 1
         order_price = 0
         for el in cart:
-            list_of_dishes += f'{count}. Блюдо: {el.dish.title}, цена: {el.dish.price}, количество: {el.count_of_dishes}\n'
+            list_of_dishes += f'{count}) Блюдо: {el.dish.title}, цена: {el.dish.price} руб., количество: {el.count_of_dishes} шт.\n'
             order_price += el.dish.price * el.count_of_dishes
             Cart.objects.filter(pk=el.pk).update(active_status=False)
             count += 1
-        list_of_dishes += f'Общая стоимость заказа составляет: {order_price}'
+        list_of_dishes += f'Общая стоимость заказа составляет: {order_price} руб.'
         form.instance.list_of_dishes = list_of_dishes
         return super(CheckoutView, self).form_valid(form)
 
