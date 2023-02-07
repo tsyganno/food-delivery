@@ -29,7 +29,7 @@
             {% if user.is_authenticated %}
 
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.first_name }} {{ user.last_name }}</a>
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="{% url 'app:my_orders' %}">Мои заказы</a>
                 <a class="dropdown-item" href="{% url 'app:cart' %}">Корзина</a>

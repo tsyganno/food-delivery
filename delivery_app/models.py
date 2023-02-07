@@ -55,6 +55,12 @@ class Cart(models.Model):
 
 
 class Order(models.Model):
+
+    ACCEPTED = 'Принят'
+    IN_PROGRESS = 'В процессе'
+    COMPLETED = 'Выполнен'
+    CANCELED = 'Отменен'
+
     PAYMENT_BY_CARD = 'Оплата картой'
     CASH_PAYMENT = 'Оплата наличными'
     BANK_TRANSFER = 'Оплата переводом через банк'
@@ -62,13 +68,19 @@ class Order(models.Model):
     owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE, verbose_name='Пользователь')
     order_creation_time = models.DateTimeField(verbose_name='Заказ создан')
     list_of_dishes = models.TextField(verbose_name='Блюда в заказе')
-    order_status = models.BooleanField(default=True, verbose_name='Статус заказа')
-    TYPE_DICT = OrderedDict((
+    TYPE_DICT_STATUS_ORDER = OrderedDict((
+        (ACCEPTED, 'Принят'),
+        (IN_PROGRESS, 'В процессе'),
+        (COMPLETED, 'Выполнен'),
+        (CANCELED, 'Отменен'),
+    ))
+    order_status = models.CharField(max_length=50, default=ACCEPTED, choices=TYPE_DICT_STATUS_ORDER.items(), verbose_name='Статус заказа')
+    TYPE_DICT_PAYMENT = OrderedDict((
         (PAYMENT_BY_CARD, 'Оплата картой'),
         (CASH_PAYMENT, 'Оплата наличными'),
         (BANK_TRANSFER, 'Оплата переводом через банк'),
     ))
-    payment_method = models.CharField(max_length=50, choices=TYPE_DICT.items(), verbose_name='Способ оплаты')
+    payment_method = models.CharField(max_length=50, choices=TYPE_DICT_PAYMENT.items(), verbose_name='Способ оплаты')
     user_phone = models.CharField(max_length=50, verbose_name='Номер телефона')
     address = models.CharField(max_length=100, verbose_name='Адрес (не больше 100 символов)')
     user_comment = models.TextField(default='', verbose_name='Комментарий от пользователя')
