@@ -8,9 +8,11 @@ from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.timezone import now
 from django.db.models import Q
+from django.views.generic import ListView, DetailView, UpdateView
+from django.contrib.messages.views import SuccessMessageMixin
 
 from delivery_app.models import Category, Dish, Cart, Order
-from delivery_app.forms import CartForm, OrderForm
+from delivery_app.forms import CartForm, OrderForm, UpdateCartForm
 
 
 class IndexView(View):
@@ -77,9 +79,28 @@ class CartView(LoginRequiredMixin, View):
         return render(request, 'delivery_app/cart.html', {'cart': cart, 'order_price': order_price})
 
 
-class CheckoutView(LoginRequiredMixin, CreateView):
+class CartUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = 'acc:signin'
+    template_name = 'delivery_app/change_in_cart.html'
+    model = Cart
+    form_class = UpdateCartForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CartUpdateView, self).get_context_data(**kwargs)
+        context['cart'] = get_object_or_404(Cart, pk=self.kwargs['cart_id'])
+        return context
+
+    def get_object(self, queryset=None):
+        return self.model.objects.get(id=self.kwargs['cart_id'])
+
+    def get_success_url(self):
+        return reverse("app:cart")
+
+
+class CheckoutView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     """Оформление заказа"""
     login_url = 'accounts:login'
+    success_message = 'Новый заказ!'
     template_name = 'delivery_app/checkout.html'
     model = Order
     form_class = OrderForm
@@ -158,12 +179,9 @@ class RemoveFromCartView(LoginRequiredMixin, DeleteView):
     model = Cart
 
     def get_queryset(self):
-        try:
-            owner = self.request.user.pk
-            variant = int(self.request.POST.getlist('variant')[0])
-            return self.model.objects.filter(user__id=owner, id=variant)
-        except IndexError:
-            return self.model.objects.filter(user__id=-1, id=-1)
+        owner = self.request.user.pk
+        variants = [int(i) for i in self.request.POST.getlist('variant')]
+        return self.model.objects.filter(user__id=owner, id__in=variants)
 
     def get_object(self, queryset=None):
         return self.get_queryset()
