@@ -89,7 +89,19 @@ class Order(models.Model):
         return 'Заказ клиента'
 
     class Meta:
-        verbose_name_plural = 'Заказы клиентов'
+        verbose_name_plural = 'Заказы клиентов (Работает администратор!!!)'
         verbose_name = 'Заказ клиента'
         ordering = ['order_creation_time']
 
+
+class Logo(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Название логотипа')
+    image_category = models.ImageField()
+
+    def __str__(self):
+        return 'Логотип'
+
+    class Meta:
+        verbose_name_plural = 'Логотипы'
+        verbose_name = 'Логотип'
+        ordering = ['name']

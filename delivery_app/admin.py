@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from delivery_app.models import Category, Dish, Cart, Order
+from delivery_app.models import Category, Dish, Cart, Order, Logo
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -29,7 +29,14 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ('list_of_dishes', 'order_status', 'payment_method',)
 
 
+class LogoAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    list_display_links = ('name',)
+    search_fields = ('name',)
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Dish, DishAdmin)
 admin.site.register(Cart, CartAdmin)
 admin.site.register(Order, OrderAdmin)
+admin.site.register(Logo, LogoAdmin)

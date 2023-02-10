@@ -11,7 +11,7 @@ from django.db.models import Q
 from django.views.generic import ListView, DetailView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 
-from delivery_app.models import Category, Dish, Cart, Order
+from delivery_app.models import Category, Dish, Cart, Order, Logo
 from delivery_app.forms import CartForm, OrderForm, UpdateCartForm
 
 
@@ -22,7 +22,8 @@ class IndexView(View):
         paginator = Paginator(categories, 6)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        return render(request, 'delivery_app/index.html', {'page_obj': page_obj})
+        logo = get_object_or_404(Logo, name='Берёзка')
+        return render(request, 'delivery_app/index.html', {'page_obj': page_obj, 'logo': logo})
 
 
 class AllDishesView(View):
@@ -32,7 +33,8 @@ class AllDishesView(View):
         paginator = Paginator(dishes, 6)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        return render(request, 'delivery_app/dish_list.html', {'page_obj': page_obj})
+        logo = get_object_or_404(Logo, name='Берёзка')
+        return render(request, 'delivery_app/dish_list.html', {'page_obj': page_obj, 'logo': logo})
 
 
 class MyOrdersView(View):
@@ -205,8 +207,8 @@ class SearchResultsView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         query = self.request.GET.get('q')
         if query and query != '':
-            dish_results = Dish.objects.filter(Q(title__icontains=query) | Q(description_dish__icontains=query))
-            category_results = Category.objects.filter(Q(title__icontains=query) | Q(description_category__icontains=query))
+            dish_results = Dish.objects.filter(Q(title__icontains=query) | Q(description_dish__icontains=query) | Q(title__icontains=query.title()) | Q(description_dish__icontains=query.title()))
+            category_results = Category.objects.filter(Q(title__icontains=query) | Q(description_category__icontains=query) | Q(title__icontains=query.title()) | Q(description_category__icontains=query.title()))
             all_things = list(dish_results) + list(category_results)
             sorted_things = sorted(all_things, key=lambda x: x.title)
             paginator = Paginator(sorted_things, 6)

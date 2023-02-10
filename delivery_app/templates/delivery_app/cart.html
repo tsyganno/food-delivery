@@ -21,7 +21,7 @@
             {% for el in cart %}
             <input type="checkbox" name="variant{{ forloop.parentloop.counter }}" id="variant{{ forloop.counter }}" value="{{ el.pk }}" />
             <label for="variant{{ forloop.counter }}">
-                <a href="{% url 'app:change_quantity' el.pk %}" name='post' class="mr-auto p-2 lead">       {{ el.dish.title }}. Цена: {{ el.dish.price }} руб. Количество: {{ el.count_of_dishes }} шт.</a>
+                <p class="mr-auto p-2 lead">{{ el.dish.title }}. Цена: {{ el.dish.price }} руб.<a href="{% url 'app:change_quantity' el.pk %}" name='post' class="mr-auto p-2 lead">Количество: {{ el.count_of_dishes }} шт.</a></p>
             </label>
             <br/>
         <br>

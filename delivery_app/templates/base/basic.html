@@ -17,22 +17,26 @@
       <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         <ul class="navbar-nav col-10">
           {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'app:all_dishes' %}">Все блюда</a>
-          </li>
+
+            <form action="{% url 'app:search_results' %}" method="get" class="form-inline my-2 my-lg-0">
+          <input name="q" type="text" class="form-control mr-sm-2" placeholder="Поиск" aria-label="Поиск">
+          <button class="btn btn-primary w-10" type="submit">Поиск</button>
+            </form>
+
           {% endif %}
         </ul>
         <ul class="navbar-nav col-2 justify-content-end">
           <li class="nav-item active">
-
 
             {% if user.is_authenticated %}
 
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'app:my_orders' %}">Мои заказы</a>
                 <a class="dropdown-item" href="{% url 'app:cart' %}">Корзина</a>
+                <a class="dropdown-item" href="{% url 'app:my_orders' %}">Мои заказы</a>
+                <a class="dropdown-item" href="{% url 'app:all_dishes' %}">Все блюда</a>
+
               <form action="{% url 'acc:signout' %}" method="POST">
                 {% csrf_token %}
                 {{ form.id_vote }}
