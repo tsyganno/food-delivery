@@ -15,16 +15,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-        <ul class="navbar-nav col-10">
-          {% if user.is_authenticated %}
-
-            <form action="{% url 'app:search_results' %}" method="get" class="form-inline my-2 my-lg-0">
-          <input name="q" type="text" class="form-control mr-sm-2" placeholder="Поиск" aria-label="Поиск">
-          <button class="btn btn-primary w-10" type="submit">Поиск</button>
-            </form>
-
-          {% endif %}
-        </ul>
+        <ul class="navbar-nav col-10"></ul>
         <ul class="navbar-nav col-2 justify-content-end">
           <li class="nav-item active">
 

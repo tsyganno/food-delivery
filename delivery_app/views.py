@@ -200,9 +200,8 @@ class SuccessView(LoginRequiredMixin, View):
         return render(request, 'delivery_app/success.html', context={'title': 'Спасибо'})
 
 
-class SearchResultsView(LoginRequiredMixin, View):
+class SearchResultsView(View):
     """Поиск блюда или категории"""
-    login_url = 'acc:signin'
 
     def get(self, request, *args, **kwargs):
         query = self.request.GET.get('q')
