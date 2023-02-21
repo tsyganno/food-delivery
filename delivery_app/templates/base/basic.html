@@ -26,8 +26,8 @@
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="{% url 'app:cart' %}">Корзина</a>
                 <a class="dropdown-item" href="{% url 'app:my_orders' %}">Мои заказы</a>
+                <a class="dropdown-item" href="{% url 'app:contact' %}">Добавить отзыв</a>
                 <a class="dropdown-item" href="{% url 'app:all_dishes' %}">Все блюда</a>
-
               <form action="{% url 'acc:signout' %}" method="POST">
                 {% csrf_token %}
                 {{ form.id_vote }}

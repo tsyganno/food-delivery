@@ -1,7 +1,8 @@
 from django.urls import path
 
 from delivery_app.views import IndexView, CategoryView, DishView, CartView, AddToCartFromDishView, \
-    AddToCartFromCategoryView, RemoveFromCartView, CheckoutView, SuccessView, SearchResultsView, AllDishesView, MyOrdersView, CartUpdateView
+    AddToCartFromCategoryView, RemoveFromCartView, CheckoutView, SuccessView, SearchResultsView, AllDishesView, \
+    MyOrdersView, CartUpdateView, FeedBackView, ContactSuccessView
 
 app_name = 'app'
 urlpatterns = [
@@ -18,4 +19,6 @@ urlpatterns = [
     path('add_to_cart_from_dish/<int:dish_id>/<slug>/', AddToCartFromCategoryView.as_view(), name='add_to_cart_from_category'),
     path('success/', SuccessView.as_view(), name='success'),
     path('search/', SearchResultsView.as_view(), name='search_results'),
+    path('contact/', FeedBackView.as_view(), name='contact'),
+    path('contact/success/', ContactSuccessView.as_view(), name='contact_success'),
 ]

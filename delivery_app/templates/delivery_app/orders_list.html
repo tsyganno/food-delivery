@@ -10,7 +10,8 @@
         <div class="col-lg-12">
             <hr>
             <ol class="breadcrumb">
-                <h4 class="breadcrumb-item active" aria-current="page"><a href="{{ request.META.HTTP_REFERER }}">Назад</a></h4>
+                <li class="breadcrumb-item active" aria-current="page">Мои заказы</li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="{{ request.META.HTTP_REFERER }}">Назад</a></li>
             </ol>
             <p class="lead">Найдено записей: {{ count }}</p>
             {% for order in page_obj %}

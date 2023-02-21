@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views import View
 from django.views.generic import DeleteView
@@ -10,9 +10,11 @@ from django.utils.timezone import now
 from django.db.models import Q
 from django.views.generic import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.mail import send_mail, BadHeaderError
 
 from delivery_app.models import Category, Dish, Cart, Order, Logo
-from delivery_app.forms import CartForm, OrderForm, UpdateCartForm
+from delivery_app.forms import CartForm, OrderForm, UpdateCartForm, FeedBackForm
+from conf.settings import EMAIL_HOST_USER
 
 
 class IndexView(View):
@@ -85,6 +87,7 @@ class CartView(LoginRequiredMixin, View):
 
 
 class CartUpdateView(LoginRequiredMixin, UpdateView):
+    """Изменение количества блюд в заказе в корзине"""
     login_url = 'acc:signin'
     template_name = 'delivery_app/change_in_cart.html'
     model = Cart
@@ -218,3 +221,34 @@ class SearchResultsView(View):
             page_obj = paginator.get_page(page_number)
             return render(request, 'delivery_app/search.html', context={'title': 'Поиск', 'results': page_obj, 'count': paginator.count})
         return HttpResponseRedirect(reverse('app:index'))
+
+
+class FeedBackView(LoginRequiredMixin, View):
+    """Обратная связь от клиента"""
+    login_url = 'acc:signin'
+
+    def get(self, request, *args, **kwargs):
+        form = FeedBackForm()
+        return render(request, 'delivery_app/contact.html', context={'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = FeedBackForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            from_email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            try:
+                send_mail(f'От {name} | тема: {subject} | почта: {from_email}', message, [EMAIL_HOST_USER])
+            except BadHeaderError:
+                return HttpResponse('Невалидный заголовок')
+            return HttpResponseRedirect(reverse('app:contact_success'))
+        return render(request, 'delivery_app/contact.html', context={'form': form})
+
+
+class ContactSuccessView(LoginRequiredMixin, View):
+    """Страница с благодарностью за обратную связь"""
+    login_url = 'acc:signin'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'delivery_app/contact_success.html')
