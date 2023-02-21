@@ -1,8 +1,7 @@
 from django.views.generic import CreateView
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
-from django.contrib.auth.views import PasswordResetView, PasswordChangeDoneView, PasswordChangeView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
-from django.contrib.auth.urls import urlpatterns
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 
 from accounts.forms import UserRegisterForm
 

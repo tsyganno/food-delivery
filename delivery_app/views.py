@@ -42,7 +42,10 @@ class MyOrdersView(View):
     def get(self, request, *args, **kwargs):
         pk_user = self.request.user.pk
         orders = Order.objects.filter(owner__id=pk_user)
-        return render(request, 'delivery_app/orders_list.html', {'orders': orders, 'count': len(orders)})
+        paginator = Paginator(orders, 5)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'delivery_app/orders_list.html', {'page_obj': page_obj, 'count': len(orders)})
 
 
 class CategoryView(LoginRequiredMixin, View):
