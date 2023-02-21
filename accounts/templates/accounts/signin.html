@@ -1,6 +1,10 @@
 {% extends "layout/layout.html" %}
 {% load crispy_forms_tags %}
 
+{% block title %}
+  <title>Авторизация</title>
+  {% endblock %}
+
 {% block main %}
     <div class="card">
         <div class="card-body">
@@ -14,4 +18,5 @@
         </div>
     </div>
     <p align="center">Нет аккаунта? <a href="{% url 'acc:signup' %}">Зарегистрируйтесь!</a></p>
+    <p align="center">Забыли пароль? <a href="{% url 'acc:reset_password' %}">Сбросьте пароль!</a></p>
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render, reverse, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import View
@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.timezone import now
 from django.db.models import Q
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 
 from delivery_app.models import Category, Dish, Cart, Order, Logo
